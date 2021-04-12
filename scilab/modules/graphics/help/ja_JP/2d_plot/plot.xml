@@ -3,7 +3,6 @@
  * Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) INRIA - Fabrice Leray
  * Copyright (C) 2012 - 2016 - Scilab Enterprises
- * Copyright (C) 2018 - 2019 - Samuel GOUGEON
  *
  * This file is hereby licensed under the terms of the GNU GPL v2.0,
  * pursuant to article 5.3.4 of the CeCILL v.2.1.
@@ -27,13 +26,14 @@
             plot     // demo
             plot(y)
             plot(x, y)
-            plot(x, fun)
-            plot(x, list(fun, param))
+            plot(x, func)
+            plot(x, list(func, params))
+            plot(x, polynomial)
+            plot(x, rational)
             plot(.., LineSpec)
             plot(.., LineSpec, GlobalProperty)
             plot(x1, y1, LineSpec1, x2,y2,LineSpec2,...xN, yN, LineSpecN, GlobalProperty1,.. GlobalPropertyM)
             plot(x1,fun1,LineSpec1, x2,y2,LineSpec2,...xN,funN,LineSpecN, GlobalProperty1, ..GlobalPropertyM)
-            plot(logflag,...)
             plot(axes_handle,...)
         </synopsis>
     </refsynopsisdiv>
@@ -53,21 +53,54 @@
             <varlistentry>
                 <term>y</term>
                 <listitem>
+                    実数行列またはベクトル.
+                    <para/>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>func</term>
+                <listitem>
                     <para>
-                        実数行列またはベクトル.
+                        handle of a function, as in <literal>plot(x, sin)</literal>.
+                        If the function to plot needs some parameters as input arguments, the
+                        function and its parameters can be specified through a list, as in
+                        <literal>plot(x, list(delip, -0.4))</literal>
                     </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
-                <term>fun, fun1, ..</term>
+                <term>polynomial</term>
+                <listitem>
+                    Single polynomial or array of polynomials.
+                    <para/>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>rational</term>
+                <listitem>
+                    Single rational or array of rationals.
+                    <para/>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>y1, y2, y3,..</term>
                 <listitem>
                     <para>
-                        handle of a function, as in <literal>plot(x, sin)</literal>.
-                    </para>
-                    <para>
-                        If the function to plot needs some parameters as input arguments, the
-                        function and its parameters can be specified through a list, as in
-                        <literal>plot(x, list(delip, -0.4))</literal>
+                        Can be any of the possible input types described above:
+                        <itemizedlist>
+                            <listitem>
+                                vectors or matrices of real numbers or of integers
+                            </listitem>
+                            <listitem>
+                                handle of a function (possibly in a list with its parameters).
+                            </listitem>
+                            <listitem>
+                                polynomials
+                            </listitem>
+                            <listitem>
+                                rationals
+                            </listitem>
+                        </itemizedlist>
                     </para>
                 </listitem>
             </varlistentry>
@@ -93,25 +126,6 @@
                         を表し,    このプロットで作成された全ての曲線に適用されます.
                         利用可能なプロパティの全て参照するには
                         <link linkend="GlobalProperty">GlobalProperty</link>を参照してください.
-                    </para>
-                </listitem>
-            </varlistentry>
-            <varlistentry>
-                <term>logflag</term>
-                <listitem>
-                    <para>
-                        "ln" | "nl" | "ll" : 2-character word made of "l" standing for
-                        "<emphasis role="bold">L</emphasis>ogarithmic" or/and "n" standing for
-                        "<emphasis role="bold">N</emphasis>ormal". The first character applies to
-                        the X axis, the second to the Y axis. Hence, "ln" means that the X axis
-                        is logarithmic and the Y axis is normal. The default is "nn":
-                        both axes in normal scales.
-                    </para>
-                    <para>
-                        <literal>logflag</literal> must be used after <literal>axes_handle</literal>
-                        (if any) and before the first curve's data <literal>x</literal> or
-                        <literal>y</literal> or <literal>fun</literal>.
-                        It applies to all curves drawn by the <literal>plot(…)</literal> instruction.
                     </para>
                 </listitem>
             </varlistentry>
@@ -286,17 +300,51 @@
         </para>
         <informaltable border="1">
             <tr>
-                <th> <literal>R</literal> </th>
-                <th> <literal>G</literal> </th>
-                <th> <literal>B</literal> </th>
+                <td>
+                    <literal>R</literal>
+                </td>
+                <td>
+                    <literal>G</literal>
+                </td>
+                <td>
+                    <literal>B</literal>
+                </td>
             </tr>
-            <tr> <td>0.</td>   <td>0.</td>   <td>1.</td>   </tr>
-            <tr> <td>0.</td>   <td>0.5</td>  <td>0.</td>   </tr>
-            <tr> <td>1.</td>   <td>0.</td>   <td>0.</td>   </tr>
-            <tr> <td>0.</td>   <td>0.75</td> <td>0.75</td> </tr>
-            <tr> <td>0.75</td> <td>0.</td>   <td>0.75</td> </tr>
-            <tr> <td>0.75</td> <td>0.75</td> <td>0.</td>   </tr>
-            <tr> <td>0.25</td> <td>0.25</td> <td>0.25</td> </tr>
+            <tr>
+                <td>0.</td>
+                <td>0.</td>
+                <td>1.</td>
+            </tr>
+            <tr>
+                <td>0.</td>
+                <td>0.5</td>
+                <td>0.</td>
+            </tr>
+            <tr>
+                <td>1.</td>
+                <td>0.</td>
+                <td>0.</td>
+            </tr>
+            <tr>
+                <td>0.</td>
+                <td>0.75</td>
+                <td>0.75</td>
+            </tr>
+            <tr>
+                <td>0.75</td>
+                <td>0.</td>
+                <td>0.75</td>
+            </tr>
+            <tr>
+                <td>0.75</td>
+                <td>0.75</td>
+                <td>0.</td>
+            </tr>
+            <tr>
+                <td>0.25</td>
+                <td>0.25</td>
+                <td>0.25</td>
+            </tr>
         </informaltable>
         <para/>
         <para>
@@ -306,6 +354,7 @@
     <refsection role="examples">
         <title>例</title>
         <para>
+<<<<<<< HEAD
             <emphasis role="bold">Choosing the normal or logarithmic plotting mode:</emphasis>
         </para>
         <programlisting role="example"><![CDATA[
@@ -461,8 +510,73 @@ title("plot(x, list(myPow,1:5))", "fontsize",3)
         ]]></scilab:image>
         <para/>
         <para>
+            <emphasis role="bold">
+                Plotting the graph of polynomials or rationals:
+            </emphasis>
+        </para>
+        <para>
+        <programlisting role="example"><![CDATA[
+clf
+s = %s;
+
+// Polynomials
+x = -0.5:0.02:3;
+p = s*[2 ; (s-2) ; (s-1)*(s-2)]
+subplot(1,2,1)
+plot(x, p)
+legend(prettyprint(p,"latex","",%t), 2);
+
+// Rationals
+x = -0.5:0.02:2;
+r = (s-1)*s/(s-7)./[s+1, s-4]
+subplot(1,2,2)
+plot(x, r)
+legend(prettyprint(r,"latex","",%t), 2);
+
+gcf().children.grid = color("grey70")*[1 1]; // grids
+gcf().children.children([1 3]).font_size=3;  // legends
+ ]]></programlisting>
+        <screen><![CDATA[
+--> p = s*[2 ; (s-2) ; (s-1)*(s-2)]
+ p  =
+  2s
+  -2s +s²
+  2s -3s² +s³
+
+../..
+--> r = (s-1)*s/(s-7)./[s+1, s-4]
+ r  =
+     -s +s²      -s +s²
+   ----------  -----------
+   -7 -6s +s²  28 -11s +s²
+]]></screen>
+        <scilab:image><![CDATA[
+            s = %s;
+
+            // Polynomials
+            x = -0.5:0.02:3;
+            p = s*[2 ; (s-2) ; (s-1)*(s-2)]
+            subplot(1,2,1)
+            plot(x, p)
+            legend(prettyprint(p,"latex","",%t), 2);
+
+            // Rationals
+            x = -0.5:0.02:2;
+            r = (s-1)*s/(s-7)./[s+1, s-4]
+            subplot(1,2,2)
+            plot(x, r)
+            legend(prettyprint(r,"latex","",%t), 2);
+
+            gcf().children.grid = color("grey70")*[1 1]; // grids
+            gcf().children.children([1 3]).font_size=3;  // legends
+            gcf().axes_size = [650 400];
+        ]]></scilab:image>
+        </para>
+        <para/>
+        <para>
             <emphasis role="bold">Setting curves simple styles when calling plot():</emphasis>
         </para>
+        <para>
         <programlisting role="example"><![CDATA[
 clf
 t = -%pi:%pi/20:2*%pi;
@@ -485,11 +599,12 @@ plot(t,sin,'ro', t,cos,'g+-', t,gauss,':b')
             gcf().axes_size = [800 400];
         ]]>
         </scilab:image>
-        <para/>
+        </para>
         <para>
         Vertical segments between two curves, with automatic colors, and using Global properties
         for markers styles. Targeting a defined axes.
         </para>
+        <para>
         <programlisting role="example"><![CDATA[
 clf
 subplot(1,3,3)
@@ -517,7 +632,7 @@ plot(ax3, t, sin)
             gcf().axes_size = [800 400];
         ]]>
         </scilab:image>
-        <para/>
+        </para>
         <para/>
         <para>
             <emphasis role="bold">Case of a non-square Y matrix:</emphasis>
@@ -726,14 +841,8 @@ isoview off
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                    Plotting a function fun(x, params) with input parameters is now possible with
-                    plot(x, list(fun, params)).
-                </revdescription>
-            </revision>
-            <revision>
-                <revnumber>6.1.0</revnumber>
-                <revdescription>
-                    logflag option added.
+                    Plotting a function func(x, params) with input parameters is now possible with
+                    plot(x, list(func, params)).
                 </revdescription>
             </revision>
         </revhistory>

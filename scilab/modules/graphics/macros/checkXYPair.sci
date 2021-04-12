@@ -56,6 +56,7 @@ function [X,Y]=checkXYPair(typeOfPlot,x,y,current_figure,cur_draw_mode)
         end
 
     else // "classical" case
+
         X=x;
         Y=y;
 
@@ -144,9 +145,6 @@ function [X,Y]=checkXYPair(typeOfPlot,x,y,current_figure,cur_draw_mode)
                 ResetFigureDDM(current_figure, cur_draw_mode)
                 error(msprintf(gettext("%s: Wrong size for input arguments #%d and #%d: Incompatible dimensions.\n"),typeOfPlot,2, 3));
                 return;
-            end
-            if YScal
-                y = y*ones(X(:,1));
             end
 
             // concatenante y in columns
