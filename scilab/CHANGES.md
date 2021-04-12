@@ -166,6 +166,7 @@ Feature changes and additions on 6.1.0
 * `setdiff` now supports complex numbers.
 * `twinkle` can now blink together several hierarchically independent objects, like a curve and its labels, etc.
 * `repmat` has been rewritten. It is 7 times faster now.
+<<<<<<< HEAD
 * `plot` can now work in semi or bi-logarithmic mode with some input logflag.
 * `plotimplicit` function added.
 * The default smarter grid_style value is now 7 instead of 3.
@@ -501,12 +502,10 @@ Bug Fixes
 * [#12520](https://bugzilla.scilab.org/12520): Variable browser did not display the size of the variables.
 * [#12534](https://bugzilla.scilab.org/12534): Variable browser did not display the size of the variables.
 * [#12837](https://bugzilla.scilab.org/12837): `strcmpi` was an obsolete duplicate of `strcmp(,'i')`. It is removed.
-* [#13603](https://bugzilla.scilab.org/13603): `plot(1:3, 10)` failed.
 * [#13683](https://bugzilla.scilab.org/13683): unsetmenu for a dockable="off" figure crashed Scilab.
 * [#13738](https://bugzilla.scilab.org/13738): `get_figure_handle` was a specific duplicate of the more powerful `findobj('figure_id',n)` feature. It is now obsolete.
 * [#13766](https://bugzilla.scilab.org/13766): Minimal values for `.figure_size` were not documented.
 * [#14015](https://bugzilla.scilab.org/14015): Nan terms added to a polynomial were ignored.
-* [#14191](https://bugzilla.scilab.org/14191): Unlike `plot2d()`, `plot()` did not accept logflags among input arguments.
 * [#14397](https://bugzilla.scilab.org/14397): `mgeti` wrongly handled `int64` or `uint64` integers bigger then 2^52. The `mget`/`mgeti` help page was unclear.
 * [#14422](https://bugzilla.scilab.org/14422): `clc(0)` did nothing, now clears last console entry. Remove leading blank after a `clc()`.
 * [#14498](https://bugzilla.scilab.org/14498): `size([],3)` returned 1 instead of 0.
@@ -591,7 +590,6 @@ Bug Fixes
 * [#15948](https://bugzilla.scilab.org/15948): `xlabel`, `ylabel`, `zlabel` and `title` needed to be upgraded.
 * [#15963](https://bugzilla.scilab.org/15963): The `EXPRESSION` block was more expected in the Mathematical palette.
 * [#15964](https://bugzilla.scilab.org/15954): A complex empty sparse matrix could be obtained after insertion.
-* [#15965](https://bugzilla.scilab.org/15965): `plot(x,y)` did not accept y as encoded integers.
 * [#15967](https://bugzilla.scilab.org/15967): `setdiff(1,[])` was [] instead of `1`. `setdiff(a,[],..)` was not enough tested.
 * [#15969](https://bugzilla.scilab.org/15969): Fix spelling
 * [#15974](https://bugzilla.scilab.org/15974): `msprintf("%d", %nan)` did not return Nan
